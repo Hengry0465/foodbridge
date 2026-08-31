@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -v)",
+      "Bash(composer -V)",
+      "Bash(winget install *)",
+      "Bash(cp /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini-development /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini)",
+      "Bash(sed -i 's/;extension_dir = \"ext\"/extension_dir = \"ext\"/' /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini)",
+      "Bash(sed -i 's/;extension=curl/extension=curl/' /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini)",
+      "Bash(sed -i 's/;extension=fileinfo/extension=fileinfo/' /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini)",
+      "Bash(sed -i 's/;extension=gd/extension=gd/' /c/Users/TT/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.3_Microsoft.Winget.Source_8wekyb3d8bbwe/php.ini)",
+      "Bash(rm -rf /tmp/food_donation_temp)",
+      "Bash(rm -rf \"C:/Users/TT/AppData/Local/Temp/food_donation_temp\")",
+      "Bash(php artisan *)",
+      "Bash(PATH=\"$PHP_DIR:$PATH\" php artisan *)",
+      "Bash(rm -f /tmp/cookies.txt)",
+      "Bash(curl -s -c /tmp/cookies.txt http://127.0.0.1:8000/register)",
+      "Bash(python \"C:/Users/TT/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"warm friendly community approachable\" --domain style)",
+      "Bash(python \"C:/Users/TT/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"forms authentication validation responsive\" --domain ux)",
+      "Bash(python \"C:/Users/TT/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"food charity donation nonprofit sharing community green organic warm\" --design-system -p \"FoodShare\" -f markdown)",
+      "Bash(python \"C:/Users/TT/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"organic green food warm earthy sustainable fresh\" --domain color)",
+      "Bash(python \"C:/Users/TT/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.6.2/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"organic curved rounded nature biophilic shapes\" --domain style)",
+      "Bash(curl -s http://127.0.0.1:8000/register)",
+      "Bash(curl *)",
+      "Bash(rmdir resources/views/layouts)",
+      "Bash(rmdir resources/views/dashboard)"
+    ]
+  }
+}
