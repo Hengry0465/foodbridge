@@ -6,14 +6,14 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
+        "php": "^8.2",
         "google/cloud-recaptcha-enterprise": "^1.0",
         "laravel/framework": "9.52.*",
         "laravel/tinker": "^2.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
+        "laravel/pint": "^1.13 <1.19",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.4|^7.0",
         "phpunit/phpunit": "^9.5"
