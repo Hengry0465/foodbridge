@@ -1,20 +1,22 @@
 {
-    "name": "foodbridge/pickup-module",
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "laravel/laravel",
     "type": "project",
-    "description": "FoodBridge - Pickup Scheduling & Tracking Module (Member 4: Prem A/L Murugiah, 2113456)",
-    "keywords": ["laravel", "framework", "pickup", "tracking", "foodbridge"],
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "laravel/framework": "^10.0",
-        "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "php": "^8.2",
+        "google/cloud-recaptcha-enterprise": "^1.0",
+        "laravel/framework": "9.52.*",
+        "laravel/tinker": "^2.7"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "^10.0"
+        "fakerphp/faker": "^1.9.1",
+        "laravel/pint": "^1.13 <1.19",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.4|^7.0",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -29,13 +31,39 @@
         }
     },
     "scripts": {
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install --ignore-scripts",
+            "npm run build"
+        ],
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+        ],
+        "test": [
+            "@php artisan config:clear --ansi @no_additional_args",
+            "@php artisan test"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
-        "test": [
-            "@php artisan config:clear --ansi",
-            "@php artisan test"
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
     "extra": {
@@ -50,8 +78,28 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "policy": {
+            "advisories": {
+                "ignore": ["PKSA-3r5d-mb8f-1qw9", "PKSA-m5cs-t1y6-qpcs", "PKSA-mdq4-51ck-6kdq", "PKSA-8qx3-n5y5-vvnd", "PKSA-w7xr-vk7n-rstm", "GHSA-crmm-hgp2-wgrp", "GHSA-5vg9-5847-vvmq", "GHSA-78fx-h6xr-vch4", "GHSA-gv7v-rgg6-548h"]
+            }
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "policy": {
+        "advisories": {
+            "ignore": [
+                "PKSA-3r5d-mb8f-1qw9",
+                "PKSA-m5cs-t1y6-qpcs",
+                "PKSA-mdq4-51ck-6kdq",
+                "PKSA-8qx3-n5y5-vvnd",
+                "PKSA-w7xr-vk7n-rstm",
+                "GHSA-crmm-hgp2-wgrp",
+                "GHSA-5vg9-5847-vvmq",
+                "GHSA-78fx-h6xr-vch4",
+                "GHSA-gv7v-rgg6-548h"
+            ]
+        }
+    }
 }
