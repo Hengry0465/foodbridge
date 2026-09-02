@@ -16,7 +16,7 @@
   <header class="w-full">
    <nav class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
     <h1 class="font-heading text-2xl font-bold text-emerald-800">FoodBridge</h1>
-    <a href="{{ route('donor.dashboard') }}" data-template-id="hero-cta" class="canva-button px-8 py-3.5 rounded-full font-semibold text-lg transition hover:scale-105 inline-block">
+    <a href="{{ route('login') }}" data-template-id="hero-cta" class="canva-button px-8 py-3.5 rounded-full font-semibold text-lg transition hover:scale-105 inline-block">
       Get Started</a>
    </nav>
    <section class="relative w-full overflow-hidden">

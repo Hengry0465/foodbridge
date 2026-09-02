@@ -56,7 +56,7 @@
                   <p class="text-xs text-gray-400">{{ $reservation->donation->pickup_address }}</p>
                 </td>
                 <td class="px-5 py-4">
-                  {{ $reservation->recipient->name ?? 'Unknown Recipient' }}
+                  {{ $reservation->recipient ? $reservation->recipient->firstname . ' ' . $reservation->recipient->lastname : 'Unknown Recipient' }}
                 </td>
                 <td class="px-5 py-4">
                   {{ $reservation->quantity_reserved }} {{ $reservation->donation->unit }}
