@@ -1,82 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-/**
- * ============================================================================
- * FoodShare Artisan 命令行入口
- * ============================================================================
- *
- * 【文件作用】
- * 这是 Laravel 应用的命令行入口文件。
- * 当执行 `php artisan xxx` 命令时，此文件被调用。
- *
- * 【执行流程】
- * 1. 加载 Composer 自动加载器
- * 2. 通过 bootstrap/app.php 创建 Application 实例
- * 3. 通过 IoC 容器解析 Console Kernel 实例
- * 4. 调用 Kernel 的 handle() 方法执行命令
- * 5. 退出，返回执行状态码
- *
- * 【与 Laravel 11+ 的差异】
- * Laravel 11+ 使用 `$app->handleCommand(new ArgvInput)` 一行调用；
- * Laravel 9 通过 IoC 容器获取 Console Kernel 后调用 handle()。
- *
- * ============================================================================
- * FoodShare Artisan CLI Entry Point
- * ============================================================================
- *
- * [File Purpose]
- * This is the CLI entry point for the Laravel application.
- * When executing `php artisan xxx` commands, this file is invoked.
- *
- * [Execution Flow]
- * 1. Load Composer autoloader
- * 2. Create Application instance via bootstrap/app.php
- * 3. Resolve Console Kernel instance via IoC container
- * 4. Call Kernel's handle() to execute the command
- * 5. Exit with command status code
- *
- * [Difference from Laravel 11+]
- * Laravel 11+ uses `$app->handleCommand(new ArgvInput)` one-liner;
- * Laravel 9 resolves Console Kernel via IoC then calls handle().
- */
-
-use Illuminate\Contracts\Console\Kernel;
-use Symfony\Component\Console\Input\ArgvInput;
-
 define('LARAVEL_START', microtime(true));
 
 // Register the Composer autoloader...
 require __DIR__.'/vendor/autoload.php';
 
 // Bootstrap Laravel and handle the command...
-/** @var Application $app */
 $app = require_once __DIR__.'/bootstrap/app.php';
 
-/*
-| 通过 IoC 容器解析 Console 内核实例。
-| 这是 Laravel 9 标准的 Artisan 启动流程。
-
-| Resolve the Console kernel instance via the IoC container.
-| This is the Laravel 9 standard Artisan boot flow.
-*/
-
-/** @var Kernel $kernel — Console 内核实例 / Console Kernel instance */
-$kernel = $app->make(Kernel::class);
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 $status = $kernel->handle(
-    $input = new ArgvInput,
-    new \Symfony\Component\Console\Output\ConsoleOutput
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
 );
 
-/*
-| 调用 terminate() 让 Console 内核执行清理逻辑（如 Schedule 监控、事件分发等）。
-| 这是 Laravel 9 与 Laravel 11+ 行为差异的关键点。
-
-| Call terminate() to let the Console kernel perform cleanup logic
-| (e.g., Schedule monitoring, event dispatching). This is a key behavioral
-| difference between Laravel 9 and Laravel 11+.
-*/
 $kernel->terminate($input, $status);
 
 exit($status);
