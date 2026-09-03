@@ -7,10 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Donation extends Model
 {
     protected $fillable = [
-        'donor_id', 'category_id', 'donation_type', 'food_name',
-        'description', 'quantity', 'quantity_reserved', 'unit',
-        'expiry_date', 'pickup_address', 'pickup_latitude',
-        'pickup_longitude', 'image_url', 'status', 'version',
+        'donor_id',
+        'category_id',
+        'donation_type',
+        'food_name',
+        'description',
+        'quantity',
+        'quantity_reserved',
+        'unit',
+        'expiry_date',
+        'pickup_address',
+        'pickup_latitude',
+        'pickup_longitude',
+        'image_url',
+        'status',
+        'version',
     ];
 
     protected $casts = [
@@ -22,6 +33,11 @@ class Donation extends Model
     public function category()
     {
         return $this->belongsTo(FoodCategory::class, 'category_id');
+    }
+
+    public function donor()
+    {
+        return $this->belongsTo(User::class, 'donor_id');
     }
 
     public function images()

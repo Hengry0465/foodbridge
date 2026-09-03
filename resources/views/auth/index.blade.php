@@ -57,8 +57,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <meta name="description" content="FoodShare — A food donation platform connecting donors, recipients, and communities" />
-  <title>FoodShare | Let Every Meal Reach Someone in Need</title>
+  <meta name="description" content="FoodBridge — A food donation platform connecting donors, recipients, and communities" />
+  <title>FoodBridge | Let Every Meal Reach Someone in Need</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,7 +66,7 @@
 
   <style>
     /* ===================================================================
-       FoodShare — Authentication Page Design System
+       FoodBridge — Authentication Page Design System
        Style:   Organic Biophilic + Nature Distilled
        Colors:  Fresh Green #059669 + Warm Amber #D97706
        Typography: Lora (headings) + Raleway (body)
@@ -482,7 +482,7 @@
                 <path d="M2 21c1.5-1.5 4-2 6.5-1.3"/>
               </svg>
             </div>
-            <span>FoodShare</span>
+            <span>FoodBridge</span>
           </div>
         </div>
 
@@ -613,7 +613,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
               </svg>
-              Sign in to FoodShare
+              Sign in to FoodBridge
             </button>
 
             <p class="form-footer">

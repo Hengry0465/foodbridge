@@ -64,8 +64,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
-  <meta name="description" content="FoodShare — Change your password" />
-  <title>FoodShare | Change Password</title>
+  <meta name="description" content="FoodBridge — Change your password" />
+  <title>FoodBridge | Change Password</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -347,7 +347,7 @@
             <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
           </svg>
         </span>
-        FoodShare
+        FoodBridge
       </a>
 
       <div class="nav-user">
@@ -515,7 +515,7 @@
   </main>
 
   <footer class="footer">
-    &copy; 2026 <a href="{{ route('home') }}">FoodShare</a> — Let Every Meal Reach Someone in Need
+    &copy; 2026 <a href="{{ route('home') }}">FoodBridge</a> — Let Every Meal Reach Someone in Need
   </footer>
 
   <script>

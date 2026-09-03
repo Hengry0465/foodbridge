@@ -190,6 +190,6 @@ class RecipientLoginStrategy implements LoginStrategyInterface
 
         // For example: load the available food list, etc.
 
-        return 'home';
+        return 'recipient.dashboard';
     }
 }

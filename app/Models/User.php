@@ -52,9 +52,12 @@ namespace App\Models;
 // getAuthIdentifier, getAuthPassword, getRememberToken,
 // setRememberToken, getRememberTokenName, etc.
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
     /**
      * ----------------------------------------------------------
      * 关联数据库表名
@@ -316,5 +319,20 @@ class User extends Authenticatable
     public function getAuthPassword(): string
     {
         return $this->password_hash;
+    }
+
+    public function donations(): HasMany
+    {
+        return $this->hasMany(Donation::class, 'donor_id');
+    }
+
+    public function foodRequests(): HasMany
+    {
+        return $this->hasMany(FoodRequest::class, 'recipient_id');
+    }
+
+    public function matchNotifications(): HasMany
+    {
+        return $this->hasMany(MatchNotification::class);
     }
 }

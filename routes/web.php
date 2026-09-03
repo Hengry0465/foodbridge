@@ -7,11 +7,12 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonorController;
+use App\Http\Controllers\RecipientController;
 
 // Landing page (注意：这里不能再有 ->name('home')，'home' 现在属于 /home)
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 // ---- Module 1: Auth ----
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -50,4 +51,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/donor/donations/{id}', [DonorController::class, 'destroy'])->name('donor.donations.destroy');
     Route::get('/donor/donations/history', [DonorController::class, 'history'])->name('donor.donations.history');
     Route::get('/donor/donations/all', [DonorController::class, 'allDonations'])->name('donor.donations.all');
+});
+
+// ---- Module 3: Recipient ----
+Route::middleware(['auth', 'role:recipient'])->group(function () {
+    Route::get('/recipient/dashboard', [RecipientController::class, 'index'])->name('recipient.dashboard');
+    Route::post('/recipient/requests', [RecipientController::class, 'store'])->middleware('throttle:recipient-actions')->name('recipient.requests.store');
+    Route::delete('/recipient/requests/{foodRequest}', [RecipientController::class, 'destroy'])->middleware('throttle:recipient-actions')->name('recipient.requests.destroy');
 });
