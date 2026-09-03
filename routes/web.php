@@ -41,10 +41,13 @@ Route::get('/profile/password', [ProfileController::class, 'showPasswordForm'])-
 Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->middleware('auth')->name('profile.password.update');
 
 // Module 2 — Donor web routes
-Route::get('/donor/dashboard', [DonorController::class, 'dashboard'])->name('donor.dashboard');
-Route::post('/donor/donations', [DonorController::class, 'store'])->name('donor.donations.store');
-Route::get('/donor/donations/{id}/edit', [DonorController::class, 'edit'])->name('donor.donations.edit');
-Route::put('/donor/donations/{id}', [DonorController::class, 'update'])->name('donor.donations.update');
-Route::delete('/donor/donations/{id}', [DonorController::class, 'destroy'])->name('donor.donations.destroy');
-Route::get('/donor/donations/history', [DonorController::class, 'history'])->name('donor.donations.history');
-Route::get('/donor/donations/all', [DonorController::class, 'allDonations'])->name('donor.donations.all');
+// ---- Module 2: Donor ----
+Route::middleware('auth')->group(function () {
+    Route::get('/donor/dashboard', [DonorController::class, 'dashboard'])->name('donor.dashboard');
+    Route::post('/donor/donations', [DonorController::class, 'store'])->name('donor.donations.store');
+    Route::get('/donor/donations/{id}/edit', [DonorController::class, 'edit'])->name('donor.donations.edit');
+    Route::put('/donor/donations/{id}', [DonorController::class, 'update'])->name('donor.donations.update');
+    Route::delete('/donor/donations/{id}', [DonorController::class, 'destroy'])->name('donor.donations.destroy');
+    Route::get('/donor/donations/history', [DonorController::class, 'history'])->name('donor.donations.history');
+    Route::get('/donor/donations/all', [DonorController::class, 'allDonations'])->name('donor.donations.all');
+});

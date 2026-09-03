@@ -300,6 +300,7 @@ class UserRepository implements UserRepositoryInterface
             'role'            => $data['role'],
             'two_factor_code' => $data['two_factor_code'] ?? null,
             '2FA_start'       => $data['2FA_start'] ?? null,
+            'verification_token' => $data['verification_token'] ?? null,
             'is_verified'     => 0,  // 新用户默认未验证，需通过 2FA 完成身份确认
             //                          // New users default to unverified; must complete 2FA
         ]);

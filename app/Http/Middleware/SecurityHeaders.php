@@ -144,13 +144,13 @@ class SecurityHeaders
         // for improved security.
         $response->headers->set('Content-Security-Policy',
             "default-src 'self'; "
-            . "script-src 'self' 'unsafe-inline' https://www.recaptcha.net https://www.gstatic.com https://cdn.tailwindcss.com https://cdn.jsdelivr.net; "
+            . "script-src 'self' 'unsafe-inline' https://www.recaptcha.net https://www.google.com https://www.gstatic.com https://cdn.tailwindcss.com https://cdn.jsdelivr.net; "
             . "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com https://cdn.jsdelivr.net; "
             . "font-src 'self' https://fonts.gstatic.com; "
             . "img-src 'self' data: https://images.unsplash.com; "
-            . "frame-src 'self' https://www.recaptcha.net; "
+            . "frame-src 'self' https://www.recaptcha.net https://www.google.com; "
             . "frame-ancestors 'none'; "
-            . "base-uri 'self'; "
+            . "base-uri 'self'; " 
             . "form-action 'self'"
         );
 

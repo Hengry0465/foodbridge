@@ -56,8 +56,17 @@
     <header class="w-full border-b border-green-100 bg-white">
         <nav class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
             <h1 class="font-heading text-2xl font-bold">FoodBridge</h1>
-            <a href="{{ route('home') }}"
-                class="px-5 py-2.5 rounded-full font-medium transition hover:opacity-90 bg-gray-900 text-white">Logout</a>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('profile.edit') }}"
+                    class="px-4 py-2 rounded-full text-sm font-medium border border-gray-300 hover:bg-gray-50 transition">Profile</a>
+                <a href="{{ route('profile.password.form') }}"
+                    class="px-4 py-2 rounded-full text-sm font-medium border border-gray-300 hover:bg-gray-50 transition">Password</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="px-5 py-2.5 rounded-full font-medium transition hover:opacity-90 bg-gray-900 text-white">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
@@ -77,7 +86,7 @@
                 <i data-lucide="user" class="w-10 h-10 text-green-700"></i>
             </div>
             <div>
-                <h2 class="font-heading font-bold text-2xl">Welcome back, Donor</h2>
+                <h2 class="font-heading font-bold text-2xl">Welcome back, {{ auth()->user()->firstname }}</h2>
                 <p class="mt-1 text-gray-600">Thank you for supporting FoodBridge!</p>
             </div>
         </section>

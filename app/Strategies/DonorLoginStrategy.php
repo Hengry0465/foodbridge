@@ -351,6 +351,6 @@ class DonorLoginStrategy implements LoginStrategyInterface
          * // event(new UserLoggedIn($user));
          */
 
-        return 'home';
+        return 'donor.dashboard'; // 捐赠者登录后跳转到捐赠者仪表盘
     }
 }

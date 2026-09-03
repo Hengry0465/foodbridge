@@ -2,6 +2,7 @@
 // Author: [Your Name]
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Donation;
 use App\Models\DonationReservation;
 use App\Models\FoodCategory;
@@ -14,7 +15,7 @@ class DonorController extends Controller
     /// GET /donor/dashboard
     public function dashboard()
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         // Stats should reflect ALL donations, not just the latest 6
         $allDonations = Donation::where('donor_id', $donorId)->get();
@@ -40,7 +41,7 @@ class DonorController extends Controller
     // GET /donor/donations/all
     public function allDonations()
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         $donations = Donation::with('category')
             ->where('donor_id', $donorId)
@@ -53,7 +54,7 @@ class DonorController extends Controller
     // POST /donor/donations
     public function store(Request $request)
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         $validated = $request->validate([
             'food_name'      => 'required|string|max:120',
@@ -85,7 +86,7 @@ class DonorController extends Controller
     // GET /donor/donations/{id}/edit
     public function edit(int $id)
     {
-        $donorId = 1;
+        $donorId = Auth::id();;
 
         $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
         $categories = FoodCategory::orderBy('name')->get();
@@ -96,7 +97,7 @@ class DonorController extends Controller
     // PUT /donor/donations/{id}
     public function update(Request $request, int $id)
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
 
@@ -130,7 +131,7 @@ class DonorController extends Controller
     // DELETE /donor/donations/{id}
     public function destroy(int $id)
     {
-        $donorId = 1;
+        $donorId = Auth::id();;
 
         $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
         $donation->delete();
@@ -142,7 +143,7 @@ class DonorController extends Controller
     // GET /donor/donations/history
     public function history()
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         $reservations = DonationReservation::whereHas('donation', function ($query) use ($donorId) {
             $query->where('donor_id', $donorId);
