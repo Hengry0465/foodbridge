@@ -8,6 +8,7 @@ use App\Repositories\UserRepositoryInterface;
 use App\Observers\DonorNotifier;
 use App\Observers\RecipientNotifier;
 use App\Services\MatchPublisher;
+use App\Services\DonationReleaseService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
 
             return $publisher;
         });
+
+        $this->app->bind(\App\Services\DonationReleaseGateway::class, DonationReleaseService::class);
     }
 
     /**

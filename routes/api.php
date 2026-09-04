@@ -1,6 +1,8 @@
 <?php
+
 use App\Http\Controllers\Api\DonationController;
 use App\Http\Controllers\Api\FoodRequestController;
+use App\Http\Controllers\Api\PickupController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +21,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/requests', [FoodRequestController::class, 'store']);
         Route::get('/requests/{foodRequest}/match', [FoodRequestController::class, 'showMatch']);
         Route::delete('/requests/{foodRequest}', [FoodRequestController::class, 'destroy']);
+
+        // Module 4: Pickups
+        Route::post('/pickups', [PickupController::class, 'store']);
+        Route::patch('/pickups/{pickup}/status', [PickupController::class, 'updateStatus']);
+        Route::get('/pickups/history', [PickupController::class, 'history']);
+        Route::get('/pickups/{pickup}', [PickupController::class, 'show']);
     });
 });

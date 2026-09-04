@@ -23,4 +23,9 @@ class MatchRecord extends Model
     {
         return $this->belongsTo(Donation::class);
     }
+
+    public function isSuccessful(): bool
+    {
+        return $this->status === 'confirmed';
+    }
 }
