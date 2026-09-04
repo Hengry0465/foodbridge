@@ -112,10 +112,16 @@
             <div class="flex items-center justify-between mb-6">
                 <h2 class="font-heading font-bold text-xl">Your Donations</h2>
 
-                <a href="{{ route('donor.donations.history') }}"
-                    class="inline-flex items-center text-sm px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition">
-                    <i data-lucide="history" class="w-4 h-4 mr-1"></i> View Donation History
-                </a>
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('donor.donations.history') }}"
+                        class="inline-flex items-center text-sm px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition">
+                        <i data-lucide="history" class="w-4 h-4 mr-1"></i> View Donation History
+                    </a>
+                    <a href="{{ route('donor.pickups') }}"
+                        class="inline-flex items-center text-sm px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition">
+                        <i data-lucide="truck" class="w-4 h-4 mr-1"></i> View Pickups
+                    </a>
+                </div>
             </div>
 
             @if ($donations->isEmpty())

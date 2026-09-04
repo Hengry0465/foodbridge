@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/donor/donations/{id}', [DonorController::class, 'destroy'])->name('donor.donations.destroy');
     Route::get('/donor/donations/history', [DonorController::class, 'history'])->name('donor.donations.history');
     Route::get('/donor/donations/all', [DonorController::class, 'allDonations'])->name('donor.donations.all');
+    Route::get('/donor/pickups', [DonorController::class, 'pickups'])->name('donor.pickups');
+    Route::post('/donor/pickups/{pickup}/status', [DonorController::class, 'updatePickupStatus'])->name('donor.pickups.updateStatus');
 });
 
 // ---- Module 3: Recipient ----
@@ -58,4 +60,7 @@ Route::middleware(['auth', 'role:recipient'])->group(function () {
     Route::get('/recipient/dashboard', [RecipientController::class, 'index'])->name('recipient.dashboard');
     Route::post('/recipient/requests', [RecipientController::class, 'store'])->middleware('throttle:recipient-actions')->name('recipient.requests.store');
     Route::delete('/recipient/requests/{foodRequest}', [RecipientController::class, 'destroy'])->middleware('throttle:recipient-actions')->name('recipient.requests.destroy');
+    Route::get('/recipient/pickups', [RecipientController::class, 'pickups'])->name('recipient.pickups');
+    Route::post('/recipient/pickups/schedule', [RecipientController::class, 'schedulePickup'])->name('recipient.pickups.schedule');
+    Route::post('/recipient/pickups/{pickup}/cancel', [RecipientController::class, 'cancelPickup'])->name('recipient.pickups.cancel');
 });

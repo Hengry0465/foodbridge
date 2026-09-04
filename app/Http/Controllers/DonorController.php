@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\MatchRecord;
+use App\Models\Pickup;
+use App\Services\PickupService;
 use App\Models\Donation;
 use App\Models\DonationReservation;
 use App\Models\FoodCategory;
@@ -143,15 +146,34 @@ class DonorController extends Controller
     // GET /donor/donations/history
     public function history()
     {
-        $donorId = Auth::id();; // TEMP — replace with Auth::id()
-
-        $reservations = DonationReservation::whereHas('donation', function ($query) use ($donorId) {
-            $query->where('donor_id', $donorId);
+        $matches = MatchRecord::whereHas('donation', function ($query) {
+            $query->where('donor_id', Auth::id());
         })
-            ->with(['donation', 'recipient'])
-            ->orderByDesc('reserved_at')
+            ->with(['donation', 'foodRequest.recipient', 'pickup.status'])
+            ->orderByDesc('created_at')
             ->get();
 
-        return view('donor.history', compact('reservations'));
+        return view('donor.history', compact('matches'));
+    }
+
+    public function pickups(PickupService $pickupService)
+    {
+        $pickups = $pickupService->getPickupHistory(Auth::user());
+
+        $stats = [
+            'scheduled' => Pickup::where('donor_id', Auth::id())->whereHas('status', fn($q) => $q->where('code', 'scheduled'))->count(),
+            'confirmed' => Pickup::where('donor_id', Auth::id())->whereHas('status', fn($q) => $q->where('code', 'confirmed'))->count(),
+            'completed' => Pickup::where('donor_id', Auth::id())->whereHas('status', fn($q) => $q->where('code', 'completed'))->count(),
+            'cancelled' => Pickup::where('donor_id', Auth::id())->whereHas('status', fn($q) => $q->where('code', 'cancelled'))->count(),
+        ];
+
+        return view('donor.pickups', compact('pickups', 'stats'));
+    }
+
+    public function updatePickupStatus(Request $request, Pickup $pickup, PickupService $pickupService)
+    {
+        $this->authorize('updateStatus', [$pickup, $request->input('status')]);
+        $pickupService->transitionStatus($pickup, $request->input('status'), $request->input('reason'));
+        return redirect()->route('donor.pickups')->with('success', 'Pickup status updated.');
     }
 }

@@ -28,4 +28,9 @@ class MatchRecord extends Model
     {
         return $this->status === 'confirmed';
     }
+
+    public function pickup()
+    {
+        return $this->hasOne(Pickup::class, 'match_id');
+    }
 }

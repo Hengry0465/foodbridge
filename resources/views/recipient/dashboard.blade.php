@@ -29,6 +29,8 @@
                     class="text-sm px-3 py-2 rounded-lg border border-emerald-600 hover:bg-emerald-800">Profile</a>
                 <a href="{{ route('profile.password.form') }}"
                     class="text-sm px-3 py-2 rounded-lg border border-emerald-600 hover:bg-emerald-800">Password</a>
+                <a href="{{ route('recipient.pickups') }}"
+                    class="text-sm px-3 py-2 rounded-lg border border-emerald-600 hover:bg-emerald-800">Pickups</a>
                 <div class="text-right">
                     <p class="font-medium">{{ $recipient->name }}</p>
                     <p class="text-xs text-emerald-200">Team Member 3 · Request & Auto Matching</p>

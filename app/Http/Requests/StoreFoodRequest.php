@@ -38,7 +38,7 @@ class StoreFoodRequest extends FormRequest
                         ->whereIn('category_id', \App\Models\FoodCategory::where('name', $this->input('category'))->pluck('id'));
                 }),
             ],
-            'category' => ['required', 'string', 'in:Cooked Meals,Bakery,Fresh Produce,Packaged Goods'],
+            'category' => ['required', 'string', 'in:Rice & Noodles,Fruits & Vegetables,Canned & Jarred Goods,Bakery,Beverages,Dairy & Eggs,Snacks,Frozen Food'],
             'quantity' => ['required', 'integer', 'min:1', 'max:10000'],
             'preferred_pickup_at' => ['required', 'date', 'after:now'],
             'request_id' => [$apiRequest ? 'required' : 'nullable', 'string', 'min:8', 'max:100', 'regex:/^[A-Za-z0-9._:-]+$/'],
