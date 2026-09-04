@@ -8,6 +8,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 
 // Landing page (注意：这里不能再有 ->name('home')，'home' 现在属于 /home)
 Route::get('/', function () {
@@ -63,4 +65,15 @@ Route::middleware(['auth', 'role:recipient'])->group(function () {
     Route::get('/recipient/pickups', [RecipientController::class, 'pickups'])->name('recipient.pickups');
     Route::post('/recipient/pickups/schedule', [RecipientController::class, 'schedulePickup'])->name('recipient.pickups.schedule');
     Route::post('/recipient/pickups/{pickup}/cancel', [RecipientController::class, 'cancelPickup'])->name('recipient.pickups.cancel');
+});
+
+// ---- Module 5: Admin ----
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/reports/export', [DashboardController::class, 'export'])->name('reports.export');
+
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/{user}/deactivate', [UserController::class, 'deactivate'])->name('users.deactivate');
+    Route::post('/users/{user}/activate', [UserController::class, 'activate'])->name('users.activate');
 });
