@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Api\V1;
-
 use App\Admin\Services\AuditLogger;
 use App\Enums\AuditActionType;
 use App\Http\Controllers\Controller;
@@ -30,9 +28,9 @@ class StatsSummaryController extends Controller
 
         return response()->json([
             'data' => [
-                'generated_at' => $stat->created_at?->toIso8601String(),
-                'period_start' => $stat->period_start->toIso8601String(),
-                'period_end' => $stat->period_end->toIso8601String(),
+                'generated_at' => $stat->created_at ? \Carbon\Carbon::parse($stat->created_at)->toIso8601String() : null,
+                'period_start' => \Carbon\Carbon::parse($stat->period_start)->toIso8601String(),
+                'period_end' => \Carbon\Carbon::parse($stat->period_end)->toIso8601String(),
                 'metrics' => $stat->metrics,
             ],
         ]);

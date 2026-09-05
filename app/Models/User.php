@@ -181,6 +181,7 @@ class User extends Authenticatable
         '2FA_start',
         'is_verified',
         'verification_token',
+        'is_active',
     ];
 
     /**

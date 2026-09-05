@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Api\V1;
-
 use App\Admin\DTOs\ReportFilterDto;
 use App\Enums\ReportExportStatus;
+use App\Enums\ReportType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ExportReportRequest;
 use App\Jobs\ExportReportPdfJob;
@@ -72,12 +71,11 @@ class ReportExportController extends Controller
         $validated = $request->validated();
 
         return new ReportFilterDto(
-            type: $validated['type'],
+            type: ReportType::from($validated['type']),
             from: isset($validated['from']) ? Carbon::parse($validated['from'])->startOfDay() : null,
             to: isset($validated['to']) ? Carbon::parse($validated['to'])->endOfDay() : null,
             status: $validated['status'] ?? null,
             category: isset($validated['category']) ? (string) $validated['category'] : null,
-            region: isset($validated['region']) ? (string) $validated['region'] : null,
             role: isset($validated['role']) ? (string) $validated['role'] : null,
             isActive: array_key_exists('is_active', $validated) ? (bool) $validated['is_active'] : null,
             actorId: isset($validated['actor_id']) ? (int) $validated['actor_id'] : null,

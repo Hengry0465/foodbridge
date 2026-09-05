@@ -1,9 +1,5 @@
 <?php
-
 namespace App\Http\Requests\Admin;
-
-use App\Enums\FoodCategory;
-use App\Enums\FoodRegion;
 use App\Enums\ReportType;
 use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,8 +22,7 @@ class IndexReportRequest extends FormRequest
             'from' => ['nullable', 'date'],
             'to' => ['nullable', 'date', 'after_or_equal:from'],
             'status' => ['nullable', 'string', 'max:50'],
-            'category' => ['nullable', Rule::enum(FoodCategory::class)],
-            'region' => ['nullable', Rule::enum(FoodRegion::class)],
+            'category' => ['nullable', 'string', 'max:100'],
             'role' => ['nullable', Rule::enum(UserRole::class)],
             'is_active' => ['nullable', 'boolean'],
             'actor_id' => ['nullable', 'integer', 'exists:users,id'],

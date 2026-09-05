@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Models;
-
 use App\Enums\AuditActionType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,9 +8,6 @@ class AuditLog extends Model
 {
     public $timestamps = false;
 
-    /**
-     * @var list<string>
-     */
     protected $fillable = [
         'actor_id',
         'action_type',
@@ -24,19 +19,13 @@ class AuditLog extends Model
         'created_at',
     ];
 
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'action_type' => AuditActionType::class,
-            'before_value' => 'array',
-            'after_value' => 'array',
-            'metadata' => 'array',
-            'created_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'action_type' => AuditActionType::class,
+        'before_value' => 'array',
+        'after_value' => 'array',
+        'metadata' => 'array',
+        'created_at' => 'datetime',
+    ];
 
     public function actor(): BelongsTo
     {
