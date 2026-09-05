@@ -21,13 +21,10 @@ class PlatformStat extends Model
     /**
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'period_start' => 'datetime',
-            'period_end' => 'datetime',
-            'metrics' => 'array',
-            'created_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'period_start' => 'datetime',
+        'period_end' => 'datetime',
+        'metrics' => 'array',
+        'created_at' => 'datetime',
+    ];
 }

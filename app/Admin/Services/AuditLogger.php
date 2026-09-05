@@ -27,9 +27,9 @@ class AuditLogger
             'action_type' => $actionType,
             'target_table' => $targetTable,
             'target_id' => $targetId,
-            'before_value' => $beforeValue,
-            'after_value' => $afterValue,
-            'metadata' => $metadata,
+            'before_value' => $beforeValue !== null ? json_encode($beforeValue) : null,
+            'after_value' => $afterValue !== null ? json_encode($afterValue) : null,
+            'metadata' => $metadata !== null ? json_encode($metadata) : null,
             'created_at' => now(),
         ]);
     }

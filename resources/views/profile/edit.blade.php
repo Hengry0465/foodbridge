@@ -655,10 +655,11 @@
 
 <body>
     @php
-        $backRoute = match ($user->role) {
+        $backRoute = match (auth()->user()->role) {
             'donor' => 'donor.dashboard',
             'recipient' => 'recipient.dashboard',
-            default => 'home',
+            'admin' => 'admin.dashboard',
+            default => 'welcome',
         };
     @endphp
 

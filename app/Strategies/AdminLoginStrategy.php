@@ -296,6 +296,6 @@ class AdminLoginStrategy implements LoginStrategyInterface
         //        Notification::send($user, new WelcomeBackNotification());
         //    }
 
-        return 'home';
+        return 'admin.dashboard';
     }
 }

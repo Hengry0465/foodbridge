@@ -65,7 +65,7 @@ class PlatformStatsAggregator
         PlatformStat::query()->create([
             'period_start' => $periodStart,
             'period_end' => $periodEnd,
-            'metrics' => $metrics,
+            'metrics' => json_encode($metrics),
             'created_at' => now(),
         ]);
 
