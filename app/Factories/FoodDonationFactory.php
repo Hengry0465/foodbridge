@@ -1,24 +1,33 @@
 <?php
-// Author: [Your Name]
 namespace App\Factories;
 
+use App\Factories\DonationTypes\CookedFoodDonation;
+use App\Factories\DonationTypes\DonationTypeInterface;
+use App\Factories\DonationTypes\FreshProduceDonation;
+use App\Factories\DonationTypes\PackagedGoodsDonation;
 use App\Models\Donation;
-use App\Models\DonationTypeExpiryRule;
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 class FoodDonationFactory
 {
     public static function create(array $data): Donation
     {
-        if (empty($data['expiry_date'])) {
-            $rule = DonationTypeExpiryRule::find($data['donation_type']);
+        $type = self::makeType($data['donation_type']);
 
-            if ($rule) {
-                $data['expiry_date'] = Carbon::now()
-                    ->addHours($rule->default_shelf_life_hours);
-            }
-        }
+        $providedExpiry = isset($data['expiry_date']) ? Carbon::parse($data['expiry_date']) : null;
+        $data['expiry_date'] = $type->calculateExpiry($providedExpiry);
 
         return Donation::create($data);
+    }
+
+    public static function makeType(string $donationType): DonationTypeInterface
+    {
+        return match ($donationType) {
+            'cooked_food' => new CookedFoodDonation(),
+            'fresh_produce' => new FreshProduceDonation(),
+            'packaged_goods' => new PackagedGoodsDonation(),
+            default => throw new InvalidArgumentException("Unknown donation type: {$donationType}"),
+        };
     }
 }

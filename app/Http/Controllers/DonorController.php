@@ -8,6 +8,7 @@ use App\Models\Pickup;
 use App\Services\PickupService;
 use App\Models\Donation;
 use App\Models\DonationReservation;
+use Illuminate\Support\Facades\Artisan;
 use App\Models\FoodCategory;
 use App\Factories\FoodDonationFactory;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ class DonorController extends Controller
     /// GET /donor/dashboard
     public function dashboard()
     {
+        Artisan::call('donations:update-status');
+
         $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
         // Stats should reflect ALL donations, not just the latest 6

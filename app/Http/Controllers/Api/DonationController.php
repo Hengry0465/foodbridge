@@ -1,43 +1,37 @@
 <?php
-// Author: [Your Name]
 namespace App\Http\Controllers\Api;
 
+use App\Factories\FoodDonationFactory;
 use App\Http\Controllers\Controller;
 use App\Models\Donation;
-use App\Models\FoodCategory;
-use App\Factories\FoodDonationFactory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
 {
-    // GET /donor/dashboard
-    public function dashboard()
+    // GET /api/v1/donations
+    public function index(Request $request): JsonResponse
     {
-        // TEMP: Member 1's Auth module isn't wired in yet, so we hardcode donor_id = 1.
-        // Once login is ready, replace with: $donorId = Auth::id();
-        $donorId = 1;
+        $donations = Donation::with(['donor:id,firstname,lastname', 'category:id,name'])
+            ->where('status', 'available')
+            ->when($request->filled('category_id'), fn ($q) => $q->where('category_id', $request->integer('category_id')))
+            ->orderBy('expiry_date')
+            ->paginate($request->integer('per_page', 15));
 
-        $donations = Donation::with('category')
-            ->where('donor_id', $donorId)
-            ->orderByDesc('created_at')
-            ->get();
-
-        $stats = [
-            'total_donations' => $donations->count(),
-            'total_quantity'  => $donations->sum('quantity'),
-            'active_listings' => $donations->whereIn('status', ['available', 'expiring_soon'])->count(),
-        ];
-
-        $categories = FoodCategory::orderBy('name')->get();
-
-        return view('donor.dashboard', compact('donations', 'stats', 'categories'));
+        return response()->json($donations);
     }
 
-    // POST /donor/donations  (Create)
-    public function store(Request $request)
+    // GET /api/v1/donations/{id}
+    public function show(int $id): JsonResponse
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        $donation = Donation::with(['donor:id,firstname,lastname', 'category:id,name'])->findOrFail($id);
 
+        return response()->json(['data' => $donation]);
+    }
+
+    // POST /api/v1/donations
+    public function store(Request $request): JsonResponse
+    {
         $validated = $request->validate([
             'food_name'      => 'required|string|max:120',
             'donation_type'  => 'required|in:cooked_food,fresh_produce,packaged_goods',
@@ -48,60 +42,58 @@ class DonationController extends Controller
             'pickup_address' => 'required|string|max:255',
         ]);
 
-        $validated['donor_id'] = $donorId;
+        $validated['donor_id'] = $request->user()->id;
 
-        FoodDonationFactory::create($validated);
+        $donation = FoodDonationFactory::create($validated);
 
-        return redirect()->route('donor.dashboard')
-            ->with('success', 'Donation listed successfully!');
+        return response()->json([
+            'message' => 'Donation created successfully.',
+            'data' => $donation,
+        ], 201);
     }
 
-    // GET /donor/donations/{id}/edit
-    public function edit(int $id)
+    // POST /api/v1/donations/{id}/reserve
+    public function reserve(Request $request, int $id): JsonResponse
     {
-        $donorId = 1; // TEMP — replace with Auth::id()
-
-        $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
-        $categories = FoodCategory::orderBy('name')->get();
-
-        return view('donor.edit', compact('donation', 'categories'));
-    }
-
-    // PUT /donor/donations/{id}  (Edit — Update)
-    public function update(Request $request, int $id)
-    {
-        $donorId = 1; // TEMP — replace with Auth::id()
-
-        $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
-
         $validated = $request->validate([
-            'food_name'      => 'required|string|max:120',
-            'donation_type'  => 'required|in:cooked_food,fresh_produce,packaged_goods',
-            'category_id'    => 'required|exists:food_categories,id',
-            'quantity'       => 'required|numeric|min:0.01',
-            'unit'           => 'required|string|max:20',
-            'expiry_date'    => 'nullable|date',
-            'pickup_address' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0.01',
+            'version'  => 'required|integer',
         ]);
 
-        // Increment version on every update (keeps optimistic locking consistent)
-        $validated['version'] = $donation->version + 1;
+        $donation = Donation::findOrFail($id);
 
-        $donation->update($validated);
+        $available = $donation->quantity - $donation->quantity_reserved;
+        if ($validated['quantity'] > $available) {
+            return response()->json([
+                'message' => 'Not enough quantity available.',
+            ], 422);
+        }
 
-        return redirect()->route('donor.dashboard')
-            ->with('success', 'Donation updated successfully!');
-    }
+        // Optimistic locking: only update if the version still matches what the
+        // client last read. If another request already reserved from this donation
+        // in between, `version` will have moved on and this update touches 0 rows.
+        $updatedRows = Donation::where('id', $donation->id)
+            ->where('version', $validated['version'])
+            ->update([
+                'quantity_reserved' => $donation->quantity_reserved + $validated['quantity'],
+                'version' => $donation->version + 1,
+            ]);
 
-    // DELETE /donor/donations/{id}  (Delete)
-    public function destroy(int $id)
-    {
-        $donorId = 1; // TEMP — replace with Auth::id()
+        if ($updatedRows === 0) {
+            return response()->json([
+                'message' => 'This donation was just updated by someone else. Please refresh and try again.',
+            ], 409);
+        }
 
-        $donation = Donation::where('donor_id', $donorId)->findOrFail($id);
-        $donation->delete();
+        $donation->refresh();
 
-        return redirect()->route('donor.dashboard')
-            ->with('success', 'Donation deleted successfully!');
+        if ($donation->quantity_reserved >= $donation->quantity && $donation->status !== 'reserved') {
+            $donation->update(['status' => 'reserved']);
+        }
+
+        return response()->json([
+            'message' => 'Donation reserved successfully.',
+            'data' => $donation,
+        ]);
     }
 }

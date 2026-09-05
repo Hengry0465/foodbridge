@@ -9,6 +9,7 @@ use App\Models\FoodRequest;
 use App\Models\MatchNotification;
 use App\Services\AutoMatchingService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 use App\Models\Pickup;
 use App\Models\MatchRecord;
@@ -20,6 +21,8 @@ class RecipientController extends Controller
 {
     public function index(Request $request): View
     {
+        Artisan::call('donations:update-status');
+
         $recipient = $request->user();
 
         $availableDonations = Donation::with(['donor', 'category'])
