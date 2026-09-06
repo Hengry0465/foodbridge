@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/donor/donations/all', [DonorController::class, 'allDonations'])->name('donor.donations.all');
     Route::get('/donor/pickups', [DonorController::class, 'pickups'])->name('donor.pickups');
     Route::post('/donor/pickups/{pickup}/status', [DonorController::class, 'updatePickupStatus'])->name('donor.pickups.updateStatus');
+    Route::get('/donor/pickups/history', [DonorController::class, 'pickupHistory'])->name('donor.pickups.history');
 });
 
 // ---- Module 3: Recipient ----
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'role:recipient'])->group(function () {
     Route::get('/recipient/pickups', [RecipientController::class, 'pickups'])->name('recipient.pickups');
     Route::post('/recipient/pickups/schedule', [RecipientController::class, 'schedulePickup'])->name('recipient.pickups.schedule');
     Route::post('/recipient/pickups/{pickup}/cancel', [RecipientController::class, 'cancelPickup'])->name('recipient.pickups.cancel');
+    Route::get('/recipient/pickups/history', [RecipientController::class, 'pickupHistory'])->name('recipient.pickups.history');
 });
 
 // ---- Module 5: Admin ----

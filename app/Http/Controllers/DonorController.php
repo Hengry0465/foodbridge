@@ -20,6 +20,7 @@ class DonorController extends Controller
     public function dashboard()
     {
         Artisan::call('donations:update-status');
+        Artisan::call('pickups:expire');
 
         $donorId = Auth::id();; // TEMP — replace with Auth::id()
 
@@ -178,5 +179,13 @@ class DonorController extends Controller
         $this->authorize('updateStatus', [$pickup, $request->input('status')]);
         $pickupService->transitionStatus($pickup, $request->input('status'), $request->input('reason'));
         return redirect()->route('donor.pickups')->with('success', 'Pickup status updated.');
+    }
+
+    public function pickupHistory(PickupService $pickupService)
+    {
+        $pickups = $pickupService->getPickupHistory(Auth::user());
+        $backRoute = 'donor.pickups';
+
+        return view('pickup-history', compact('pickups', 'backRoute'));
     }
 }

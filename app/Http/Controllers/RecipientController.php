@@ -22,6 +22,7 @@ class RecipientController extends Controller
     public function index(Request $request): View
     {
         Artisan::call('donations:update-status');
+        Artisan::call('pickups:expire');
 
         $recipient = $request->user();
 
@@ -100,5 +101,13 @@ class RecipientController extends Controller
         $this->authorize('updateStatus', [$pickup, 'cancelled']);
         $pickupService->transitionStatus($pickup, 'cancelled', $request->input('reason'));
         return redirect()->route('recipient.pickups')->with('success', 'Pickup cancelled.');
+    }
+
+    public function pickupHistory(PickupService $pickupService)
+    {
+        $pickups = $pickupService->getPickupHistory(Auth::user());
+        $backRoute = 'recipient.pickups';
+
+        return view('pickup-history', compact('pickups', 'backRoute'));
     }
 }
